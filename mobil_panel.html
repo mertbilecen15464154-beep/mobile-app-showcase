@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AppCraft Pro - Cross-Platform Mobil Uygulama Yönetimi</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            500: '#ec4899',
+                            600: '#db2777',
+                            neon: '#f472b6',
+                            darkBg: '#090d16',
+                            cardBg: '#111827',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #090d16;
+            color: #f3f4f6;
+        }
+        .glass-card {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-pink {
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-pink-500 selection:text-white">
+
+    <!-- Toast Bildirim Alanı -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+
+    <div class="flex-1 flex flex-col lg:flex-row min-h-screen">
+        
+        <!-- YAN MENÜ -->
+        <aside class="w-full lg:w-64 bg-[#0d1322] border-b lg:border-b-0 lg:border-r border-gray-800 flex flex-col justify-between p-4 shrink-0">
+            <div>
+                <div class="flex items-center gap-3 px-3 py-4 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-600 flex items-center justify-center text-white font-black text-xl shadow-lg glow-pink">
+                        <i class="fa-solid fa-mobile-screen-button"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-extrabold text-lg tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-rose-400">APPCRAFT</h1>
+                        <p class="text-[10px] text-gray-400 tracking-widest font-semibold uppercase">FLUTTER / REACT NATIVE</p>
+                    </div>
+                </div>
+
+                <nav class="space-y-1.5">
+                    <button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all bg-pink-500/10 text-pink-400 border border-pink-500/20">
+                        <i class="fa-solid fa-utensils text-base w-5"></i>
+                        <span>Mobil Menü & Uygulama Paneli</span>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="mt-8 pt-4 border-t border-gray-800/80 px-2">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-pink-950 border border-pink-500/30 flex items-center justify-center text-pink-400 font-bold text-sm">
+                        FL
+                    </div>
+                    <div class="overflow-hidden">
+                        <h4 class="text-xs font-semibold text-gray-200 truncate">Cross-Platform Engine</h4>
+                        <p class="text-[11px] text-gray-500 truncate">iOS & Android Ready</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ANA İÇERİK -->
+        <main class="flex-1 p-4 md:p-8 overflow-y-auto max-w-7xl mx-auto w-full">
+            
+            <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Mobil Uygulama Yönetimi (Restoran Menü)</h2>
+                    <p class="text-xs md:text-sm text-gray-400 mt-1">App Store ve Play Store'da yayınlanacak mobil uygulamanın içerik ve menü kontrolü.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="openAddMenuItemModal()" class="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white font-bold text-xs md:text-sm px-4 py-2.5 rounded-xl shadow-lg transition-all glow-pink">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Menüye Ürün Ekle</span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Sol: Ürün Listesi ve Yönetim -->
+                <div class="glass-card p-6 rounded-2xl lg:col-span-2 space-y-4">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-burger text-pink-400"></i> Mobil Uygulama Menü Öğeleri
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs text-gray-300">
+                            <thead class="bg-gray-900/80 text-gray-400 uppercase text-[10px] border-b border-gray-800">
+                                <tr>
+                                    <th class="p-3">Ürün Adı</th>
+                                    <th class="p-3">Kategori</th>
+                                    <th class="p-3">Fiyat</th>
+                                    <th class="p-3 text-right">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="menu-table-body" class="divide-y divide-gray-800/60">
+                                <!-- Dinamik -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Sağ: Canlı Telefon Simülatörü Önizlemesi -->
+                <div class="glass-card p-6 rounded-2xl lg:col-span-1 flex flex-col items-center justify-center relative overflow-hidden">
+                    <div class="w-full text-center mb-3">
+                        <span class="text-xs font-bold text-pink-400 uppercase tracking-widest"><i class="fa-brands fa-apple"></i> / <i class="fa-brands fa-android"></i> Canlı Önizleme</span>
+                    </div>
+                    
+                    <!-- Telefon Çerçevesi -->
+                    <div class="w-64 h-[420px] bg-slate-950 border-4 border-gray-700 rounded-[35px] p-3 shadow-2xl flex flex-col justify-between relative">
+                        <!-- Çentik -->
+                        <div class="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-4 bg-gray-800 rounded-full"></div>
+                        
+                        <!-- Ekran İçeriği -->
+                        <div class="mt-5 flex-1 overflow-y-auto space-y-2 pr-1 text-xs">
+                            <div class="bg-pink-500/10 p-2.5 rounded-xl border border-pink-500/20 text-center mb-3">
+                                <h4 class="font-bold text-white">Lezzet Durağı</h4>
+                                <p class="text-[10px] text-gray-400">Mobil Sipariş Uygulaması</p>
+                            </div>
+                            <div id="mobile-preview-list" class="space-y-2">
+                                <!-- Dinamik telefon içi menü -->
+                            </div>
+                        </div>
+
+                        <!-- Alt Bar -->
+                        <div class="text-center pt-2 border-t border-gray-800 text-[10px] text-gray-500 font-mono">
+                            Flutter Cross-Platform v1.0
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL: YENİ ÜRÜN EKLE -->
+    <div id="modal-menu" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card bg-[#111827] border border-gray-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-800 mb-5">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-utensils text-pink-400"></i> Menüye Yeni Ürün Ekle
+                </h3>
+                <button onclick="closeMenuModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <form id="form-menu" onsave="saveMenuItem(event)" onsubmit="saveMenuItem(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Yemek / Ürün Adı</label>
+                    <input type="text" id="m-name" required placeholder="Örn: Special Burger" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3.5 py-2.5 text-xs text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Kategori</label>
+                    <input type="text" id="m-category" required placeholder="Ana Yemek, Tatlı, İçecek vb." class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3.5 py-2.5 text-xs text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 mb-1">Fiyat (₺)</label>
+                    <input type="number" id="m-price" required placeholder="350" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3.5 py-2.5 text-xs text-white">
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-800 mt-6">
+                    <button type="button" onclick="closeMenuModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:bg-gray-800">İptal</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-pink-500 text-white hover:bg-pink-400 glow-pink">Ekle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT KONTROL MOTORU -->
+    <script>
+        let menuItems = [
+            { id: 'm1', name: 'Cheeseburger', category: 'Ana Yemek', price: 320 },
+            { id: 'm2', name: 'Ev Yapımı Limonata', category: 'İçecek', price: 90 },
+            { id: 'm3', name: 'San Sebastián Cheesecake', category: 'Tatlı', price: 180 }
+        ];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderMenu();
+        });
+
+        function renderMenu() {
+            const tbody = document.getElementById('menu-table-body');
+            const previewList = document.getElementById('mobile-preview-list');
+            tbody.innerHTML = '';
+            previewList.innerHTML = '';
+
+            if (menuItems.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-500 italic">Menüde ürün bulunmuyor.</td></tr>`;
+                previewList.innerHTML = `<div class="text-center text-gray-500 italic py-4">Menü boş</div>`;
+                return;
+            }
+
+            menuItems.forEach(item => {
+                // Yönetim Tablosu Satırı
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-gray-800/40 transition-colors';
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-white">${item.name}</td>
+                    <td class="p-3 text-gray-400">${item.category}</td>
+                    <td class="p-3 text-pink-400 font-bold">₺${item.price}</td>
+                    <td class="p-3 text-right">
+                        <button onclick="deleteMenuItem('${item.id}')" class="text-red-400 hover:text-red-300 text-xs px-2 py-1 bg-red-500/10 rounded-lg"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+
+                // Telefon Simülatörü İçeriği
+                const div = document.createElement('div');
+                div.className = 'bg-gray-900 p-2 rounded-lg border border-gray-800 flex items-center justify-between';
+                div.innerHTML = `
+                    <div>
+                        <div class="font-bold text-white text-[11px]">${item.name}</div>
+                        <div class="text-[9px] text-gray-400">${item.category}</div>
+                    </div>
+                    <div class="text-pink-400 font-bold text-[11px]">₺${item.price}</div>
+                `;
+                previewList.appendChild(div);
+            });
+        }
+
+        function openAddMenuItemModal() {
+            document.getElementById('form-menu').reset();
+            document.getElementById('modal-menu').classList.remove('hidden');
+        }
+
+        function closeMenuModal() {
+            document.getElementById('modal-menu').classList.add('hidden');
+        }
+
+        function saveMenuItem(e) {
+            e.preventDefault();
+            const name = document.getElementById('m-name').value.trim();
+            const category = document.getElementById('m-category').value.trim();
+            const price = parseFloat(document.getElementById('m-price').value) || 0;
+
+            menuItems.push({
+                id: 'm_' + Date.now(),
+                name, category, price
+            });
+
+            renderMenu();
+            closeMenuModal();
+            showToast("Ürün menüye ve mobil uygulamaya eklendi!", "success");
+        }
+
+        function deleteMenuItem(id) {
+            menuItems = menuItems.filter(i => i.id !== id);
+            renderMenu();
+            showToast("Ürün menüden silindi.", "info");
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `p-4 rounded-xl border border-pink-500/40 bg-gray-900/95 text-pink-400 shadow-xl flex items-center gap-3 text-xs font-semibold backdrop-blur-md`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-base shrink-0"></i><span class="text-white font-medium">${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
